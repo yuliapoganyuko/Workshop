@@ -5,7 +5,7 @@ using System.Net.Http.Headers;
 using Newtonsoft.Json;
 using PortfolioManagerClient.Models;
 
-namespace PortfolioManagerClient.Services
+namespace Services
 {
     /// <summary>
     /// Works with portfolio backend.

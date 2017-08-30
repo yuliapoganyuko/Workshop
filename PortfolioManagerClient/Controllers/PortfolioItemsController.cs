@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Web.Http;
 using PortfolioManagerClient.Models;
-using PortfolioManagerClient.Services;
+using Service.Interface;
 
 namespace PortfolioManagerClient.Controllers
 {
@@ -10,8 +10,8 @@ namespace PortfolioManagerClient.Controllers
     /// </summary>
     public class PortfolioItemsController : ApiController
     {
-        private readonly PortfolioItemsService _portfolioItemsService = new PortfolioItemsService();
-        private readonly UsersService _usersService = new UsersService();
+        private readonly IService<PortfolioItemViewModel> _portfolioItemsService;
+        private readonly IService<UserViewModel> _usersService;
 
         /// <summary>
         /// Returns all portfolio items for the current user.
