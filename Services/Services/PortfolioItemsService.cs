@@ -3,14 +3,15 @@ using System.Configuration;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using Newtonsoft.Json;
-using PortfolioManagerClient.Models;
+using Service.Interface.Entities;
+using Service.Interface;
 
 namespace Services
 {
     /// <summary>
     /// Works with portfolio backend.
     /// </summary>
-    public class PortfolioItemsService
+    public class PortfolioItemsService : IService<PortfolioItem>
     {
         /// <summary>
         /// The url for getting all portfolio items.
@@ -53,17 +54,17 @@ namespace Services
         /// </summary>
         /// <param name="userId">The User Id.</param>
         /// <returns>The list of portfolio items.</returns>
-        public IList<PortfolioItemViewModel> GetItems(int userId)
+        public IEnumerable<PortfolioItem> GetItems(int userId)
         {
             var dataAsString = _httpClient.GetStringAsync(string.Format(_serviceApiUrl + GetAllUrl, userId)).Result;
-            return JsonConvert.DeserializeObject<IList<PortfolioItemViewModel>>(dataAsString);
+            return JsonConvert.DeserializeObject<IList<PortfolioItem>>(dataAsString);
         }
 
         /// <summary>
         /// Creates a portfolio item. UserId is taken from the model.
         /// </summary>
         /// <param name="item">The portfolio item to create.</param>
-        public void CreateItem(PortfolioItemViewModel item)
+        public void CreateItem(PortfolioItem item)
         {
             _httpClient.PostAsJsonAsync(_serviceApiUrl + CreateUrl, item)
                 .Result.EnsureSuccessStatusCode();
@@ -73,7 +74,7 @@ namespace Services
         /// Updates a portfolio item.
         /// </summary>
         /// <param name="item">The portfolio item to update.</param>
-        public void UpdateItem(PortfolioItemViewModel item)
+        public void UpdateItem(PortfolioItem item)
         {
             _httpClient.PutAsJsonAsync(_serviceApiUrl + UpdateUrl, item)
                 .Result.EnsureSuccessStatusCode();

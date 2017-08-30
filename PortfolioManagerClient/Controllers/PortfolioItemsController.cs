@@ -11,7 +11,13 @@ namespace PortfolioManagerClient.Controllers
     public class PortfolioItemsController : ApiController
     {
         private readonly IService<PortfolioItemViewModel> _portfolioItemsService;
-        private readonly IService<UserViewModel> _usersService;
+        private readonly IUserService _usersService;
+        public PortfolioItemsController(IService<PortfolioItemViewModel> portfolioItemsService , 
+                                                                                    IUserService usersService)
+        {
+            _portfolioItemsService = portfolioItemsService;
+            _usersService = usersService;
+        }
 
         /// <summary>
         /// Returns all portfolio items for the current user.
@@ -20,7 +26,7 @@ namespace PortfolioManagerClient.Controllers
         public IList<PortfolioItemViewModel> Get()
         {
             var userId = _usersService.GetOrCreateUser();
-            return _portfolioItemsService.GetItems(userId);
+            return (IList<PortfolioItemViewModel>)_portfolioItemsService.GetItems(userId);
         }
 
         /// <summary>

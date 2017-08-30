@@ -3,13 +3,14 @@ using System.Configuration;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web;
+using Service.Interface;
 
 namespace Services
 {
     /// <summary>
     /// Works with Users backend.
     /// </summary>
-    public class UsersService
+    public class UsersService : IUserService
     {
         /// <summary>
         /// The url for users' creation.
