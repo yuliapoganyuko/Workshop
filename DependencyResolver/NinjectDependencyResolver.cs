@@ -4,7 +4,8 @@ using Service.Interface.Entities;
 using Services;
 using System;
 using System.Collections.Generic;
-using System.Web.Mvc;
+//using System.Web.Mvc;
+using System.Web.Http.Dependencies;
 
 namespace DependencyResolver
 {
@@ -16,6 +17,17 @@ namespace DependencyResolver
             kernel = kernelParam;
             AddBindings();
         }
+
+        public IDependencyScope BeginScope()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Dispose()
+        {
+            throw new NotImplementedException();
+        }
+
         public object GetService(Type serviceType)
         {
             return kernel.TryGet(serviceType);
