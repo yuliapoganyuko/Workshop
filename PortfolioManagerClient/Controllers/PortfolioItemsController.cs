@@ -60,7 +60,6 @@ namespace PortfolioManagerClient.Controllers
         {
             portfolioItem.UserId = _usersService.GetOrCreateUser();
             _portfolioItemsService.CreateItem(portfolioItem.ToPortfolioItem());
-            Get();
         }
     }
 }

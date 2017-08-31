@@ -108,12 +108,12 @@ namespace Services.Services
 
         private void InitializeFile(int userId)
         {
-            if (!File.Exists(filePath))
-            {
+           if (!File.Exists(filePath))
+           {
                 var items = portfolioItemsService.GetItems(userId);
                 string json = JsonConvert.SerializeObject(items);
                 File.WriteAllText(filePath, json);
-            }
+           }
         }
     }
 }

@@ -88,10 +88,9 @@ $(function () {
         portfolioManager.createItem(symbol, sharesNumber)
             .then(portfolioManager.loadItems)
             .done(function(items) {
-                portfolioManager.displayItems("#items > tbody", items);
-               
+                portfolioManager.displayItems("#items > tbody", items);               
             });
-         location.reload();
+        setTimeout(function() {window.location.reload();}, 1000);
     });
 
     // bind update portfolio item checkbox click handler
@@ -127,5 +126,4 @@ $(function () {
         .done(function(items) {
             portfolioManager.displayItems("#items > tbody", items);
         });
-    
 });
