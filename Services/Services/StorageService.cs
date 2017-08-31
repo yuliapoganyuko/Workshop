@@ -1,12 +1,11 @@
-﻿using Service.Interface;
+﻿using Newtonsoft.Json;
+using Service.Interface;
 using Service.Interface.Entities;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 namespace Services.Services
 {
@@ -15,20 +14,20 @@ namespace Services.Services
         private string filePath;
         private PortfolioItemsService portfolioItemsService;
         private UsersService usersService;
+        private int userId;
 
         public StorageService(string path)
         {
             filePath = path;
             portfolioItemsService = new PortfolioItemsService();
             usersService = new UsersService();
-            var userId = usersService.GetOrCreateUser();
+            userId = usersService.GetOrCreateUser();
             InitializeFile(userId);
         }
 
-        public void CreateItem(PortfolioItem item)
+        public async void CreateItem(PortfolioItem item)
         {
             string newJson;
-
             using (StreamReader r = new StreamReader(filePath))
             {
                 string json = r.ReadToEnd();
@@ -38,11 +37,11 @@ namespace Services.Services
             }
 
             File.WriteAllText(filePath, newJson);
-
-            portfolioItemsService.CreateItem(item);
+            await Task.Factory.StartNew(() => portfolioItemsService.CreateItem(item));
+            
         }
 
-        public void DeleteItem(int id)
+        public async void DeleteItem(int id)
         {
             PortfolioItem item = null;
             string newJson;
@@ -71,25 +70,24 @@ namespace Services.Services
             }
 
             File.WriteAllText(filePath, newJson);
-
-            portfolioItemsService.DeleteItem(item.ItemId);
+            await Task.Factory.StartNew(() => portfolioItemsService.DeleteItem(item.ItemId));
         }
 
-        public IEnumerable<PortfolioItem> GetItems(int id)
+        public IList<PortfolioItem> GetItems(int id)
         {
-            IEnumerable<PortfolioItem> items;
+            IList<PortfolioItem> items;
 
             using (StreamReader r = new StreamReader(filePath))
             {
                 string json = r.ReadToEnd();
                 items = JsonConvert.DeserializeObject<List<PortfolioItem>>(json);
-                items = items.Select(i => i).Where(i => i.UserId == id); 
+                items = items.Select(i => i).Where(i => i.UserId == id).ToList();
             }
 
             return items;
         }
 
-        public void UpdateItem(PortfolioItem item)
+        public async void UpdateItem(PortfolioItem item)
         {
             string newJson;
 
@@ -105,14 +103,17 @@ namespace Services.Services
 
             File.WriteAllText(filePath, newJson);
 
-            portfolioItemsService.UpdateItem(item);
+            await Task.Factory.StartNew(() => portfolioItemsService.UpdateItem(item));
         }
 
         private void InitializeFile(int userId)
         {
-            var items = portfolioItemsService.GetItems(userId);
-            string json = JsonConvert.SerializeObject(items);
-            File.WriteAllText(filePath, json);
+           if (!File.Exists(filePath))
+           {
+                var items = portfolioItemsService.GetItems(userId);
+                string json = JsonConvert.SerializeObject(items);
+                File.WriteAllText(filePath, json);
+           }
         }
     }
 }

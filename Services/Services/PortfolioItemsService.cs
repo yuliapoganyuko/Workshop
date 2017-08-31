@@ -54,7 +54,7 @@ namespace Services
         /// </summary>
         /// <param name="userId">The User Id.</param>
         /// <returns>The list of portfolio items.</returns>
-        public IEnumerable<PortfolioItem> GetItems(int userId)
+        public IList<PortfolioItem> GetItems(int userId)
         {
             var dataAsString = _httpClient.GetStringAsync(string.Format(_serviceApiUrl + GetAllUrl, userId)).Result;
             return JsonConvert.DeserializeObject<IList<PortfolioItem>>(dataAsString);
@@ -66,7 +66,7 @@ namespace Services
         /// <param name="item">The portfolio item to create.</param>
         public void CreateItem(PortfolioItem item)
         {
-            _httpClient.PostAsJsonAsync(_serviceApiUrl + CreateUrl, item)
+             _httpClient.PostAsJsonAsync(_serviceApiUrl + CreateUrl, item)
                 .Result.EnsureSuccessStatusCode();
         }
 
