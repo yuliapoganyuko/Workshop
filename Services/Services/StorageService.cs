@@ -37,7 +37,6 @@ namespace Services.Services
             }
 
             File.WriteAllText(filePath, newJson);
-            GetItems(userId);
             await Task.Factory.StartNew(() => portfolioItemsService.CreateItem(item));
             
         }

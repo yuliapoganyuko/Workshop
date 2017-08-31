@@ -89,7 +89,9 @@ $(function () {
             .then(portfolioManager.loadItems)
             .done(function(items) {
                 portfolioManager.displayItems("#items > tbody", items);
+               
             });
+         location.reload();
     });
 
     // bind update portfolio item checkbox click handler
@@ -106,6 +108,7 @@ $(function () {
             .done(function (items) {
                 portfolioManager.displayItems("#items > tbody", items);
             });
+        location.reload();
     });
 
     // bind delete button click for future rows
@@ -116,6 +119,7 @@ $(function () {
             .done(function(items) {
                 portfolioManager.displayItems("#items > tbody", items);
             });
+        location.reload();
     });
 
     // load all items on startup
@@ -123,4 +127,5 @@ $(function () {
         .done(function(items) {
             portfolioManager.displayItems("#items > tbody", items);
         });
+    
 });
