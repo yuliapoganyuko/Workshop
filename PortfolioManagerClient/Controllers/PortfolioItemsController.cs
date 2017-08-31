@@ -6,6 +6,10 @@ using Services;
 using Service.Interface.Entities;
 using PortfolioManagerClient.Infrastructure;
 using Services.Services;
+using System.Net;
+using System;
+using System.Threading.Tasks;
+using System.Net.Http;
 
 namespace PortfolioManagerClient.Controllers
 {
@@ -14,12 +18,13 @@ namespace PortfolioManagerClient.Controllers
     /// </summary>
     public class PortfolioItemsController : ApiController
     {
-        private readonly IService<PortfolioItem> _portfolioItemsService = new StorageService("test") ;
+        private readonly IService<PortfolioItem> _storageService = new StorageService();
         private readonly IUserService _usersService = new UsersService();
-        //public PortfolioItemsController(IService<PortfolioItemViewModel> portfolioItemsService , 
+
+        //public PortfolioItemsController(IService<PortfolioItem> storageService,
         //                                                                            IUserService usersService)
         //{
-        //    _portfolioItemsService = portfolioItemsService;
+        //    _storageService = storageService;
         //    _usersService = usersService;
         //}
 
@@ -30,7 +35,7 @@ namespace PortfolioManagerClient.Controllers
         public IList<PortfolioItemViewModel> Get()
         {
             var userId = _usersService.GetOrCreateUser();
-            return _portfolioItemsService.GetItems(userId).ToPortfolioItemViewModelList();
+            return _storageService.GetItems(userId).ToPortfolioItemViewModelList();
         }
 
         /// <summary>
@@ -40,7 +45,7 @@ namespace PortfolioManagerClient.Controllers
         public void Put(PortfolioItemViewModel portfolioItem)
         {
             portfolioItem.UserId = _usersService.GetOrCreateUser();
-            _portfolioItemsService.UpdateItem(portfolioItem.ToPortfolioItem());
+            _storageService.UpdateItem(portfolioItem.ToPortfolioItem());
         }
 
         /// <summary>
@@ -49,17 +54,26 @@ namespace PortfolioManagerClient.Controllers
         /// <param name="id">The portfolio item identifier.</param>
         public void Delete(int id)
         {
-            _portfolioItemsService.DeleteItem(id);
+            _storageService.DeleteItem(id);
         }
 
         /// <summary>
         /// Creates a new portfolio item.
         /// </summary>
         /// <param name="portfolioItem">The portfolio item to create.</param>
-        public void Post(PortfolioItemViewModel portfolioItem)
+        public IHttpActionResult Post(PortfolioItemViewModel portfolioItem)
         {
             portfolioItem.UserId = _usersService.GetOrCreateUser();
-            _portfolioItemsService.CreateItem(portfolioItem.ToPortfolioItem());
+            try
+            {
+                _storageService.CreateItem(portfolioItem.ToPortfolioItem());
+            }
+            catch (HttpRequestException)
+            {
+                return InternalServerError();
+            }
+            return Ok();
+
         }
     }
 }

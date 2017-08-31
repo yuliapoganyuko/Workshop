@@ -1,4 +1,6 @@
-﻿namespace PortfolioManagerClient.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace PortfolioManagerClient.Models
 {
     public class PortfolioItemViewModel
     {
@@ -6,8 +8,10 @@
 
         public int UserId { get; set; }
 
+        [Required]
         public string Symbol { get; set; }
 
+        [Required]
         public int SharesNumber { get; set; }
     }
 }

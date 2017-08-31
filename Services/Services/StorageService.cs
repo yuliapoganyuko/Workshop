@@ -16,12 +16,12 @@ namespace Services.Services
         private UsersService usersService;
         private int userId;
 
-        public StorageService(string path)
+        public StorageService()
         {
-            filePath = path;
             portfolioItemsService = new PortfolioItemsService();
             usersService = new UsersService();
             userId = usersService.GetOrCreateUser();
+            filePath = "User" + userId;
             InitializeFile(userId);
         }
 
@@ -102,7 +102,6 @@ namespace Services.Services
             }
 
             File.WriteAllText(filePath, newJson);
-
             await Task.Factory.StartNew(() => portfolioItemsService.UpdateItem(item));
         }
 

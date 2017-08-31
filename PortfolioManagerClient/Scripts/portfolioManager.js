@@ -7,7 +7,7 @@
         var tr = $("<tr data-id='" + obj.ItemId + "'></tr>");
         tr.append("<td class='name' >" + obj.Symbol + "</td>");
         tr.append("<td class='name' >" + obj.SharesNumber + "</td>");
-        tr.append("<td><input type='button' class='update-button' value='Update' /><input type='button' class='delete-button' value='Delete' /></td>");
+        tr.append("<td><a class='update-button editDelete'>Update<a/><a class='delete-button editDelete' value='Delete'>Delete</a></td>");
         $(parentSelector).append(tr);
     }
 
@@ -118,7 +118,7 @@ $(function () {
             .done(function(items) {
                 portfolioManager.displayItems("#items > tbody", items);
             });
-        location.reload();
+        setTimeout(function () { window.location.reload(); }, 1000);
     });
 
     // load all items on startup
