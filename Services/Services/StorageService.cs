@@ -83,7 +83,7 @@ namespace Services.Services
             {
                 string json = r.ReadToEnd();
                 items = JsonConvert.DeserializeObject<List<PortfolioItem>>(json);
-                items = items.Select(i => i).Where(i => i.UserId == id);
+                items = items.Select(i => i).Where(i => i.UserId == id); 
             }
 
             return items;
