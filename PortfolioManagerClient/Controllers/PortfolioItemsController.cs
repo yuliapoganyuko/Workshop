@@ -5,6 +5,7 @@ using Service.Interface;
 using Services;
 using Service.Interface.Entities;
 using PortfolioManagerClient.Infrastructure;
+using Services.Services;
 
 namespace PortfolioManagerClient.Controllers
 {
@@ -13,7 +14,7 @@ namespace PortfolioManagerClient.Controllers
     /// </summary>
     public class PortfolioItemsController : ApiController
     {
-        private readonly IService<PortfolioItem> _portfolioItemsService = new PortfolioItemsService() ;
+        private readonly IService<PortfolioItem> _portfolioItemsService = new StorageService("test") ;
         private readonly IUserService _usersService = new UsersService();
         //public PortfolioItemsController(IService<PortfolioItemViewModel> portfolioItemsService , 
         //                                                                            IUserService usersService)
