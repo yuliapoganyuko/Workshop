@@ -66,7 +66,7 @@ namespace Services
         /// <param name="item">The portfolio item to create.</param>
         public void CreateItem(PortfolioItem item)
         {
-            _httpClient.PostAsJsonAsync(_serviceApiUrl + CreateUrl, item)
+             _httpClient.PostAsJsonAsync(_serviceApiUrl + CreateUrl, item)
                 .Result.EnsureSuccessStatusCode();
         }
 
