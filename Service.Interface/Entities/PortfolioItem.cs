@@ -15,5 +15,7 @@ namespace Service.Interface.Entities
         public string Symbol { get; set; }
 
         public int SharesNumber { get; set; }
+
+        public double Price { get; set; }
     }
 }

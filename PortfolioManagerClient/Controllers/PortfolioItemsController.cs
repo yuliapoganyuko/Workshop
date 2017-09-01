@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Web.Http;
 using PortfolioManagerClient.Models;
-using Service.Interface;
-using Services;
-using Service.Interface.Entities;
+using PortfolioManagerClient.Services;
+using PriceService;
 using PortfolioManagerClient.Infrastructure;
-using Services.Services;
 
 namespace PortfolioManagerClient.Controllers
 {
@@ -14,14 +12,9 @@ namespace PortfolioManagerClient.Controllers
     /// </summary>
     public class PortfolioItemsController : ApiController
     {
-        private readonly IService<PortfolioItem> _portfolioItemsService = new StorageService("test") ;
-        private readonly IUserService _usersService = new UsersService();
-        //public PortfolioItemsController(IService<PortfolioItemViewModel> portfolioItemsService , 
-        //                                                                            IUserService usersService)
-        //{
-        //    _portfolioItemsService = portfolioItemsService;
-        //    _usersService = usersService;
-        //}
+        private readonly PortfolioItemsService _portfolioItemsService = new PortfolioItemsService();
+        private readonly UsersService _usersService = new UsersService();
+        private readonly PriceInfoService _priceService = new PriceInfoService();
 
         /// <summary>
         /// Returns all portfolio items for the current user.
@@ -30,9 +23,13 @@ namespace PortfolioManagerClient.Controllers
         public IList<PortfolioItemViewModel> Get()
         {
             var userId = _usersService.GetOrCreateUser();
-            return _portfolioItemsService.GetItems(userId).ToPortfolioItemViewModelList();
+            IList<PortfolioItemViewModel> items = _portfolioItemsService.GetItems(userId);
+            if (items != null)
+                return _priceService.GetPrices(items.ToPortfolioItemList()).ToPortfolioItemViewModelList();
+            else
+                return items;
         }
-
+        
         /// <summary>
         /// Updates the existing portfolio item.
         /// </summary>
@@ -40,7 +37,7 @@ namespace PortfolioManagerClient.Controllers
         public void Put(PortfolioItemViewModel portfolioItem)
         {
             portfolioItem.UserId = _usersService.GetOrCreateUser();
-            _portfolioItemsService.UpdateItem(portfolioItem.ToPortfolioItem());
+            _portfolioItemsService.UpdateItem(portfolioItem);
         }
 
         /// <summary>
@@ -59,7 +56,7 @@ namespace PortfolioManagerClient.Controllers
         public void Post(PortfolioItemViewModel portfolioItem)
         {
             portfolioItem.UserId = _usersService.GetOrCreateUser();
-            _portfolioItemsService.CreateItem(portfolioItem.ToPortfolioItem());
+            _portfolioItemsService.CreateItem(portfolioItem);
         }
     }
 }

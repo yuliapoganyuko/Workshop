@@ -7,6 +7,8 @@
         var tr = $("<tr data-id='" + obj.ItemId + "'></tr>");
         tr.append("<td class='name' >" + obj.Symbol + "</td>");
         tr.append("<td class='name' >" + obj.SharesNumber + "</td>");
+        tr.append("<td class='name' >" + obj.Price + "</td>");
+        tr.append("<td class='name' >" + obj.Total + "</td>");
         tr.append("<td><input type='button' class='update-button' value='Update' /><input type='button' class='delete-button' value='Delete' /></td>");
         $(parentSelector).append(tr);
     }
@@ -88,9 +90,8 @@ $(function () {
         portfolioManager.createItem(symbol, sharesNumber)
             .then(portfolioManager.loadItems)
             .done(function(items) {
-                portfolioManager.displayItems("#items > tbody", items);               
+                portfolioManager.displayItems("#items > tbody", items);
             });
-        setTimeout(function() {window.location.reload();}, 1000);
     });
 
     // bind update portfolio item checkbox click handler
@@ -107,7 +108,6 @@ $(function () {
             .done(function (items) {
                 portfolioManager.displayItems("#items > tbody", items);
             });
-        location.reload();
     });
 
     // bind delete button click for future rows
@@ -118,7 +118,6 @@ $(function () {
             .done(function(items) {
                 portfolioManager.displayItems("#items > tbody", items);
             });
-        location.reload();
     });
 
     // load all items on startup

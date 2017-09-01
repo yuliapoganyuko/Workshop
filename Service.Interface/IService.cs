@@ -8,10 +8,9 @@ namespace Service.Interface
 {
     public interface IService<T>
     {
-        IList<T> GetItems(int id);
+        IEnumerable<T> GetItems(int id);
         void DeleteItem(int id);
         void UpdateItem(T item);
         void CreateItem(T item);
-
     }
 }

@@ -4,11 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Service.Interface
+namespace Service
 {
-    public interface IUserService
+    public class Class1
     {
-        int CreateUser(string userName);
-        int GetOrCreateUser();
     }
 }

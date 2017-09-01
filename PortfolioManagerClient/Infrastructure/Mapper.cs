@@ -9,16 +9,18 @@ namespace PortfolioManagerClient.Infrastructure
 {
     public static class Mapper
     {
-        public static PortfolioItem ToPortfolioItem (this PortfolioItemViewModel item)
+        public static PortfolioItem ToPortfolioItem(this PortfolioItemViewModel item)
         {
             return new PortfolioItem()
             {
                 ItemId = item.ItemId,
                 SharesNumber = item.SharesNumber,
                 Symbol = item.Symbol,
-                UserId = item.UserId
+                UserId = item.UserId,
+                Price = item.Price
             };
         }
+
         public static IList<PortfolioItem> ToPortfolioItemList(this IList<PortfolioItemViewModel> list)
         {
             var newList = new List<PortfolioItem>();
@@ -34,9 +36,11 @@ namespace PortfolioManagerClient.Infrastructure
                 ItemId = item.ItemId,
                 SharesNumber = item.SharesNumber,
                 Symbol = item.Symbol,
-                UserId = item.UserId
+                UserId = item.UserId,
+                Price = item.Price
             };
         }
+
         public static IList<PortfolioItemViewModel> ToPortfolioItemViewModelList(this IList<PortfolioItem> list)
         {
             var newList = new List<PortfolioItemViewModel>();
